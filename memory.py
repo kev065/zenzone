@@ -1,7 +1,10 @@
 import sqlite3
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 class MemoryManager:
-    def __init__(self, db_name='memory.db'):
+    def __init__(self, db_name=os.getenv('DB_NAME', 'memory.db')):
         self.conn = sqlite3.connect(db_name)
         self.create_table()
 
