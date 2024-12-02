@@ -39,9 +39,8 @@ ZenZone is a compassionate AI chatbot designed to provide personalized support a
 
 5. Contributing:
 
-We welcome contributions to improve ZenZone! Feel free to fork the repository, make changes, and submit a pull request.
+    We welcome contributions to improve **ZenZone**. Feel free to fork the repository, make changes, and submit a pull request.
 
 ### License
 
 [MIT](https://github.com/kev065/zenzone/blob/main/LICENSE)
-
