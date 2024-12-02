@@ -3,7 +3,7 @@ from graph import graph
 import uuid
 from langchain_core.messages import HumanMessage
 
-st.title("Wellbeing Chatbot")
+st.title("ZenZone Chatbot")
 st.subheader("Share your thoughts and feelings in a safe, supportive space")
 
 # Initialize session state for unique ID and chat history
@@ -13,8 +13,7 @@ if "user_id" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-
-# Function to handle chatbot responses
+# handle chatbot responses
 def chatbot_response(input_text):
     thread = {"configurable": {"thread_id": st.session_state.user_id}}
     messages = [HumanMessage(content=input_text)]
