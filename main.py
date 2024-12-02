@@ -1,18 +1,40 @@
 import streamlit as st
-from chatbot import Chatbot
+from graph import graph  
+import uuid
+from langchain_core.messages import HumanMessage
 
-def main():
-    st.title("Wellbeing Chatbot")
-    st.write("Welcome! I'm here to support you. How can I assist you today?")
+st.title("Wellbeing Chatbot")
+st.subheader("Share your thoughts and feelings in a safe, supportive space")
 
-    if 'chatbot' not in st.session_state:
-        st.session_state.chatbot = Chatbot()
+# Initialize session state for unique ID and chat history
+if "user_id" not in st.session_state:
+    st.session_state.user_id = uuid.uuid4()
 
-    user_input = st.text_input("You: ")
-    if user_input:
-        response = st.session_state.chatbot.get_response(user_input)
-        st.text_area("Chatbot:", value=response, height=100)
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
-if __name__ == "__main__":
-    main()
-    
+
+# Function to handle chatbot responses
+def chatbot_response(input_text):
+    thread = {"configurable": {"thread_id": st.session_state.user_id}}
+    messages = [HumanMessage(content=input_text)]
+    output_text = graph.invoke({'messages': messages}, config=thread)
+    return output_text['messages'][-1].content
+
+# Display chat messages from history
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# User input handling
+if user_input := st.chat_input("Share your thoughts..."):
+    # Display and store the user's message
+    st.chat_message("user").markdown(user_input)
+    st.session_state.messages.append({"role": "user", "content": user_input})
+
+    # Generate bot response
+    bot_response = chatbot_response(user_input)
+    # Display and store the bot's response
+    with st.chat_message("assistant"):
+        st.markdown(bot_response)
+    st.session_state.messages.append({"role": "assistant", "content": bot_response})
